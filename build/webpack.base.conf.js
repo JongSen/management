@@ -21,9 +21,7 @@ module.exports = {
 		alias: {
 			'src': path.resolve(__dirname, '../src'),
 			'assets': path.resolve(__dirname, '../src/assets'),
-			'components': path.resolve(__dirname, '../src/components'),
-			//'CK': path.resolve(__dirname, '../src/libs/ckplayer/ckplayer.js')
-			'CK': path.resolve(__dirname, '../node_modules/ckplayer/ckplayer.js')
+			'components': path.resolve(__dirname, '../src/components')
 		}
 	},
 	resolveLoader: {
@@ -44,22 +42,22 @@ module.exports = {
 				exclude: /node_modules/
 			}
 		],
-		loaders: [
+		rules: [
 			{
 				test: /\.js$/,
-				loader: 'babel',
+				loader: 'babel-loader',
 				include: projectRoot,
 				exclude: /node_modules/
 			},{
 				test: /\.vue$/,
-				loader: 'vue'
+				loader: 'vue-loader'
 			},{
 				test: /\.html$/,
-				loader: 'vue-html'
+				loader: 'vue-html-loader'
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-				loader: 'url',
+				loader: 'url-loader',
 				query: {
 				  limit: 1000,
 				  name: utils.assetsPath('img/[name].[hash:7].[ext]')
@@ -67,7 +65,7 @@ module.exports = {
 			},
 			{
 				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-				loader: 'url',
+				loader: 'url-loader',
 				query: {
 				  limit: 10000,
 				  name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
