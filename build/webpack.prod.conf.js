@@ -12,7 +12,7 @@ var env = process.env.NODE_ENV === 'testing'
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
-    loaders: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
+    rules: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
@@ -22,7 +22,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   vue: {
-    loaders: utils.cssLoaders({
+    rules: utils.cssLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true
     })
@@ -33,8 +33,17 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env
     }),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
       compress: {
-        warnings: false
+          warnings: true,
+          drop_console: true,
+          pure_funcs: ['console.log']
+      },
+      mangle: {
+          except: ['$super', '$', 'exports', 'require'],
+      },
+      output: {
+          comments: false,
       }
     }),
     new webpack.optimize.OccurenceOrderPlugin(),

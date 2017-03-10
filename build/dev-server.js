@@ -1,6 +1,3 @@
-/**
- * Created by Y on 8/9/16.
- */
 var path = require('path');
 var config = require('../config');
 var express = require('express');
@@ -16,8 +13,10 @@ var port = process.env.PORT || config.dev.port;
 var proxyTable = config.dev.proxyTable;
 
 var app = express();
+console.log(webpackConfig)
 
 var compiler = webpack(webpackConfig);
+console.log(compiler)
 
 var devMiddleware = WebpackDevMiddleware(compiler, {
 	publicPath: webpackConfig.output.publicPath,
