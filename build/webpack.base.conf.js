@@ -15,6 +15,12 @@ module.exports = {
 		publicPath: config.build.assetsPublicPath,
 		filename: '[name].[hash:7].js'
 	},
+	// devServer: {
+ //    	historyApiFallback: true,
+ //    	hot: false,
+ //    	inline: true,
+ //    	grogress: true,
+	// },
 	resolve: {
 		extensions: ['', '.js', '.vue'],
 		fallback: [path.join(__dirname, '../node_modules')],
@@ -23,43 +29,47 @@ module.exports = {
 			'assets': path.resolve(__dirname, '../src/assets'),
 			'components': path.resolve(__dirname, '../src/components'),
 			//'CK': path.resolve(__dirname, '../src/libs/ckplayer/ckplayer.js')
-			'CK': path.resolve(__dirname, '../node_modules/ckplayer/ckplayer.js')
+			// 'CK': path.resolve(__dirname, '../node_modules/ckplayer/ckplayer.js')
 		}
 	},
 	resolveLoader: {
 		fallback: [path.join(__dirname, '../node_modules')]
 	},
 	module: {
-		preLoaders: [
-			{
-				test: /\.vue$/,
-				loader: 'eslint',
-				include: projectRoot,
-				exclude: /node_modules/
-			},
+		// preLoaders: [
+		// 	{
+		// 		test: /\.vue$/,
+		// 		loader: 'eslint-loader',
+		// 		include: projectRoot,
+		// 		exclude: /node_modules/
+		// 	},
+		// 	{
+		// 		test: /\.js$/,
+		// 		loader: 'eslint-loader',
+		// 		include: projectRoot,
+		// 		exclude: /node_modules/
+		// 	}
+		// ],
+		rules: [
 			{
 				test: /\.js$/,
-				loader: 'eslint',
-				include: projectRoot,
-				exclude: /node_modules/
-			}
-		],
-		loaders: [
-			{
-				test: /\.js$/,
-				loader: 'babel',
+				enforce: "pre",
+				use: ["eslint-loader", "babel-loader"],
+				//loader: 'babel-loader',
 				include: projectRoot,
 				exclude: /node_modules/
 			},{
 				test: /\.vue$/,
-				loader: 'vue'
+				enforce: "pre",
+				use: ["eslint-loader", "vue-loader"]
+				//loader: 'vue-loader'
 			},{
 				test: /\.html$/,
-				loader: 'vue-html'
+				loader: 'vue-html-loader'
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-				loader: 'url',
+				use: 'url-loader',
 				query: {
 				  limit: 1000,
 				  name: utils.assetsPath('img/[name].[hash:7].[ext]')
@@ -67,7 +77,7 @@ module.exports = {
 			},
 			{
 				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-				loader: 'url',
+				use: 'url-loader',
 				query: {
 				  limit: 10000,
 				  name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
@@ -79,12 +89,13 @@ module.exports = {
 		formatter: require('eslint-friendly-formatter')
 	},
 	vue: {
-		loaders: utils.cssLoaders()
+		rules: utils.cssLoaders()
 	},
 	postcss: function () {
 		return [autoprefixer]
 	},
 	plugins: [
+		new webpack.BannerPlugin('This file is created by Y'),
 		new Px2remWebpackPlugin({originScreenWidth: 750}),
 		//new webpack.optimize.CommonsChunkPlugin('common.[hash:7].js'),
 		//new ExtractTextPlugin("style.[hash:7].css"),
